@@ -25,46 +25,46 @@ const Home: React.FC = () => {
   const [answers, setAnswers] = useState<Record<number, string>>({});
 
   const questions: Question[] = [
-    { question: "用艺术性的方式做事", category: "J" },
-    { question: "给别人传授知识", category: "E" },
-    { question: "需要手眼协调的任务", category: "F" },
-    { question: "流畅准确地完成一系列动作", category: "F" },
-    { question: "跟随音乐的节拍", category: "G" },
-    { question: "判断动物的需求", category: "H" },
-    { question: "刻画塑造事物", category: "J" },
-    { question: "需要手指灵巧的任务", category: "F" },
-    { question: "清楚明白地阐述事情", category: "A" },
-    { question: "让配色协调", category: "J" },
-    { question: "理解公式", category: "B" },
-    { question: "与身体相关的任务", category: "F" },
-    { question: "产出丰富的想法", category: "I" },
-    { question: "空间想象和思考", category: "C" },
-    { question: "找到不同寻常的问题解決办法", category: "I" },
-    { question: "有逻辑地思考问题", category: "B" },
-    { question: "理解数学向題", category: "B" },
-    { question: "用我的语言说服对方", category: "A" },
-    { question: "识别和理解我的情绪", category: "D" },
-    { question: "用数学方式进行论述", category: "B" },
-    { question: "从不同视角想想物体", category: "C" },
-    { question: "用语言来表达想法", category: "A" },
-    { question: "认识到我的愿望和需求，并与人交流", category: "D" },
-    { question: "替别人着想", category: "E" },
-    { question: "拥有破框思维", category: "I" },
-    { question: "空间定位", category: "C" },
-    { question: "遇到压力时让自己平静", category: "D" },
-    { question: "根据说明将事物在脑海中呈现出来", category: "C" },
-    { question: "与别人打交道", category: "E" },
-    { question: "与不熟悉的动物共处", category: "H" },
-    { question: "听到旋律中细微的不和谐之处", category: "G" },
-    { question: "照料不同种类的植物", category: "H" },
-    { question: "唱歌", category: "G" },
-    { question: "在时间紧迫的情況下处理问题", category: "D" },
-    { question: "识别不同草药并在工作中使用它们", category: "H" },
-    { question: "原创性思考", category: "I" },
-    { question: "装饰空间", category: "J" },
-    { question: "迅速理解对方想要给我传达什么信息", category: "A" },
-    { question: "学习不同种类的乐器", category: "G" },
-    { question: "在人与人之同斡旋", category: "E" },
+    { question: "我擅长用艺术性的方式做事？", category: "J" },
+    { question: "我擅长给别人传授知识？", category: "E" },
+    { question: "我擅长需要手眼协调的任务？", category: "F" },
+    { question: "我擅长流畅准确地完成一系列动作？", category: "F" },
+    { question: "我擅长跟随音乐的节拍？", category: "G" },
+    { question: "我擅长判断动物的需求？", category: "H" },
+    { question: "我擅长刻画塑造事物？", category: "J" },
+    { question: "我擅长需要手指灵巧的任务？", category: "F" },
+    { question: "我擅长清楚明白地阐述事情？", category: "A" },
+    { question: "我擅长让配色协调？", category: "J" },
+    { question: "我擅长理解公式？", category: "B" },
+    { question: "我擅长与身体相关的任务？", category: "F" },
+    { question: "我擅长产出丰富的想法？", category: "I" },
+    { question: "我擅长空间想象和思考？", category: "C" },
+    { question: "我擅长找到不同寻常的问题解決办法？", category: "I" },
+    { question: "我擅长有逻辑地思考问题？", category: "B" },
+    { question: "我擅长理解数学向題？", category: "B" },
+    { question: "我擅长用我的语言说服对方？", category: "A" },
+    { question: "我擅长识别和理解我的情绪？", category: "D" },
+    { question: "我擅长用数学方式进行论述？", category: "B" },
+    { question: "我擅长从不同视角想想物体？", category: "C" },
+    { question: "我擅长用语言来表达想法？", category: "A" },
+    { question: "我擅长认识到我的愿望和需求，并与人交流？", category: "D" },
+    { question: "我擅长替别人着想？", category: "E" },
+    { question: "我擅长拥有破框思维？", category: "I" },
+    { question: "我擅长空间定位？", category: "C" },
+    { question: "我擅长遇到压力时让自己平静？", category: "D" },
+    { question: "我擅长根据说明将事物在脑海中呈现出来？", category: "C" },
+    { question: "我擅长与别人打交道？", category: "E" },
+    { question: "我擅长与不熟悉的动物共处？", category: "H" },
+    { question: "我擅长听到旋律中细微的不和谐之处？", category: "G" },
+    { question: "我擅长照料不同种类的植物？", category: "H" },
+    { question: "我擅长唱歌？", category: "G" },
+    { question: "我擅长在时间紧迫的情況下处理问题？", category: "D" },
+    { question: "我擅长识别不同草药并在工作中使用它们？", category: "H" },
+    { question: "我擅长原创性思考？", category: "I" },
+    { question: "我擅长装饰空间？", category: "J" },
+    { question: "我擅长迅速理解对方想要给我传达什么信息？", category: "A" },
+    { question: "我擅长学习不同种类的乐器？", category: "G" },
+    { question: "我擅长在人与人之同斡旋？", category: "E" },
   ];
 
   const talents: Talent = {
@@ -123,13 +123,16 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-800">
       <Head>
-        <title>天赋测验</title>
+        <title>天赋自测</title>
       </Head>
 
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl text-center font-bold mb-8 text-gray-900 dark:text-gray-200">
-          天赋测验
+          天赋自测
         </h1>
+        <div className="max-w-2xl mx-3 mb-3 text-gray-700 dark:text-gray-300">
+          说明：总共40题，每题5个选项。
+        </div>
         {!submitted ? (
           <form onSubmit={handleSubmit}>
             <div className="mb-6 mx-3">
@@ -166,7 +169,12 @@ const Home: React.FC = () => {
             </div>
             <button
               type="button"
-              className={"bg-blue-500 text-white px-4 py-2 rounded mr-4" + (currentQuestionIndex === 0 ? " opacity-50 cursor-not-allowed" : "")}
+              className={
+                "bg-blue-500 text-white px-4 py-2 rounded mr-4" +
+                (currentQuestionIndex === 0
+                  ? " opacity-50 cursor-not-allowed"
+                  : "")
+              }
               onClick={handlePreviousQuestion}
               disabled={currentQuestionIndex === 0}
             >
@@ -176,7 +184,9 @@ const Home: React.FC = () => {
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded"
             >
-              {currentQuestionIndex < questions.length - 1 ? "下一题" : "查看结果"}
+              {currentQuestionIndex < questions.length - 1
+                ? "下一题"
+                : "查看结果"}
             </button>
           </form>
         ) : (
