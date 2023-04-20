@@ -114,17 +114,17 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-800">
       <Head>
         <title>天赋测验</title>
       </Head>
 
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl text-center font-bold mb-8">天赋测验</h1>
+        <h1 className="text-4xl text-center font-bold mb-8 text-gray-900 dark:text-gray-200">天赋测验</h1>
         {!submitted ? (
         <form onSubmit={handleSubmit}>
           <div className="mb-6 mx-3">
-            <p className="mb-2 font-semibold">
+            <p className="mb-2 font-semibold text-gray-900 dark:text-gray-200">
               {currentQuestionIndex + 1}. {questions[currentQuestionIndex].question}（{questions[currentQuestionIndex].category}类）
             </p>
             <div className="flex flex-col">
@@ -145,7 +145,7 @@ const Home: React.FC = () => {
                       answers[currentQuestionIndex] === score ? 'bg-blue-500' : ''
                     }`}
                   ></span>
-                  <span>{label}</span>
+                  <span className='text-gray-900 dark:text-gray-200'>{label}</span>
                 </label>
               ))}
             </div>
