@@ -1,5 +1,5 @@
-import { useState, FormEvent } from 'react';
-import Head from 'next/head';
+import { useState, FormEvent } from "react";
+import Head from "next/head";
 
 type Question = {
   question: string;
@@ -98,6 +98,13 @@ const Home: React.FC = () => {
 
   const handleAnswerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnswers({ ...answers, [currentQuestionIndex]: event.target.value });
+
+    if (currentQuestionIndex < questions.length - 1) {
+      setTimeout(() => {
+        // 自动跳到下一题
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      }, 500);
+    }
   };
 
   const handlePreviousQuestion = () => {
@@ -114,60 +121,86 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-800">
       <Head>
         <title>天赋测验</title>
       </Head>
 
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl text-center font-bold mb-8">天赋测验</h1>
+        <h1 className="text-4xl text-center font-bold mb-8 text-gray-900 dark:text-gray-200">
+          天赋测验
+        </h1>
         {!submitted ? (
-        <form onSubmit={handleSubmit}>
-          <div className="mb-6 mx-3">
-            <p className="mb-2 font-semibold">
-              {currentQuestionIndex + 1}. {questions[currentQuestionIndex].question}（{questions[currentQuestionIndex].category}类）
-            </p>
-            <div className="flex flex-col">
-              {Object.entries(optionLabels).map(([score, label]) => (
-                <label key={score} className="mb-2 flex items-center">
-                  <input
-                    className="hidden"
-                    type="radio"
-                    name={`question_${currentQuestionIndex}`}
-                    value={score}
-                    required
-                    onChange={handleAnswerChange}
-                    checked={answers[currentQuestionIndex] === score}
-                    id={`question_${currentQuestionIndex}_option_${score}`}
-                  />
-                  <span
-                    className={`inline-block w-4 h-4 mr-2 border border-gray-500 rounded-full ${
-                      answers[currentQuestionIndex] === score ? 'bg-blue-500' : ''
-                    }`}
-                  ></span>
-                  <span>{label}</span>
-                </label>
-              ))}
+          <form onSubmit={handleSubmit}>
+            <div className="mb-6 mx-3">
+              <p className="mb-4 font-semibold text-gray-900 dark:text-gray-200">
+                {currentQuestionIndex + 1}.{" "}
+                {questions[currentQuestionIndex].question}
+              </p>
+              <div className="flex flex-col">
+                {Object.entries(optionLabels).map(([score, label]) => (
+                  <label key={score} className="mb-4 flex items-center">
+                    <input
+                      className="hidden"
+                      type="radio"
+                      name={`question_${currentQuestionIndex}`}
+                      value={score}
+                      required
+                      onChange={handleAnswerChange}
+                      checked={answers[currentQuestionIndex] === score}
+                      id={`question_${currentQuestionIndex}_option_${score}`}
+                    />
+                    <span
+                      className={`inline-block w-4 h-4 mr-2 border border-gray-500 rounded-full ${
+                        answers[currentQuestionIndex] === score
+                          ? "bg-blue-500"
+                          : ""
+                      }`}
+                    ></span>
+                    <span className="text-gray-900 dark:text-gray-200">
+                      {label}
+                    </span>
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
-          <button type="button" className="bg-blue-500 text-white px-4 py-2 rounded mr-4" onClick={handlePreviousQuestion}>
-            上一题
-          </button>
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-            {currentQuestionIndex < questions.length - 1 ? '下一题' : '完成'}
-          </button>
-        </form>
-      ) : (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">结果</h2>
-            <ul>
-              {Object.entries(results).map(([key, value]) => (
-                <li key={key} className="mb-2">
-                  {talents[key]}（{key}类）: {displayTalentResult(value)} (
-                  {value} 分)
-                </li>
-              ))}
-            </ul>
+            <button
+              type="button"
+              className={"bg-blue-500 text-white px-4 py-2 rounded mr-4" + (currentQuestionIndex === 0 ? " opacity-50 cursor-not-allowed" : "")}
+              onClick={handlePreviousQuestion}
+              disabled={currentQuestionIndex === 0}
+            >
+              上一题
+            </button>
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              {currentQuestionIndex < questions.length - 1 ? "下一题" : "查看结果"}
+            </button>
+          </form>
+        ) : (
+          <div className="mx-3">
+            <div>
+              <h2 className="text-2xl font-bold mb-4">结果</h2>
+              <ul>
+                {Object.entries(results).map(([key, value]) => (
+                  <li key={key} className="mb-2">
+                    {talents[key]}: {displayTalentResult(value)} ({value} 分)
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded mt-8"
+              onClick={() => {
+                setAnswers(Array(questions.length).fill(""));
+                setCurrentQuestionIndex(0);
+                setSubmitted(false);
+              }}
+            >
+              重新测试
+            </button>
           </div>
         )}
       </div>
