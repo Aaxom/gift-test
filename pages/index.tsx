@@ -130,9 +130,11 @@ const Home: React.FC = () => {
         <h1 className="text-4xl text-center font-bold mb-8 text-gray-900 dark:text-gray-200">
           天赋自测
         </h1>
-        <div className="max-w-2xl mx-3 mb-3 text-gray-700 dark:text-gray-300">
+        {!submitted && (
+          <div className="max-w-2xl mx-3 mb-3 text-gray-700 dark:text-gray-300">
           说明：总共40题，每题5个选项。
         </div>
+        )}
         {!submitted ? (
           <form onSubmit={handleSubmit}>
             <div className="mb-6 mx-3">
