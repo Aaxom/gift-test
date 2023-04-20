@@ -306,7 +306,7 @@ const Home: React.FC = () => {
                   .map(([key, value]) => `${talents[key]}`)
                   .slice(0, 3)
                   .join("、")}
-              </span>，而
+              </span>，然而
               <span className=" text-blue-500">
                 {Object.entries(results)
                   .sort((a, b) => a[1] - b[1])
@@ -316,7 +316,7 @@ const Home: React.FC = () => {
               </span>相对较弱。
             </div>
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-4">分析</h2>
+              <h2 className="text-2xl font-bold mb-4">能力图</h2>
               <TalentPolygon scores={results} />
             </div>
 
