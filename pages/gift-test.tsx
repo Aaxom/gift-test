@@ -126,18 +126,18 @@ const Home: React.FC = () => {
         <title>天赋自测</title>
       </Head>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="px-4 py-8">
         <h1 className="text-4xl text-center font-bold mb-8 text-gray-900 dark:text-gray-200">
           天赋自测
         </h1>
         {!submitted && (
-          <div className="max-w-2xl mx-3 mb-3 text-gray-700 dark:text-gray-300">
+          <div className="max-w-sm mx-auto mb-3 px-4 xs:px-6 sm:px-8 text-gray-700 dark:text-gray-300">
           说明：总共40题，每题5个选项。
         </div>
         )}
         {!submitted ? (
-          <form onSubmit={handleSubmit}>
-            <div className="mb-6 mx-3">
+          <form onSubmit={handleSubmit} className="max-w-sm mx-auto px-4 xs:px-6 sm:px-8">
+            <div className="mb-6">
               <p className="mb-4 font-semibold text-gray-900 dark:text-gray-200">
                 {currentQuestionIndex + 1}.{" "}
                 {questions[currentQuestionIndex].question}
@@ -192,7 +192,7 @@ const Home: React.FC = () => {
             </button>
           </form>
         ) : (
-          <div className="mx-3">
+          <div className="mx-auto">
             <div>
               <h2 className="text-2xl font-bold mb-4">结果</h2>
               <ul>
