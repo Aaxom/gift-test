@@ -170,7 +170,7 @@ const GiftTest: React.FC = () => {
             const scoreLevel = (scores[category] - 1) / 20;
             const { x, y } = calculatePoint(angle, scoreLevel);
 
-            return <circle key={category} cx={x} cy={y} r={3} fill="black" />;
+            return <circle key={category} cx={x} cy={y} r={3} fill="black" className="dark:fill-white"/>;
           })}
         </g>
         <g>
@@ -298,13 +298,30 @@ const GiftTest: React.FC = () => {
           </form>
         ) : (
           <div className="max-w-sm mx-auto px-4 xs:px-6 sm:px-8">
+            <div className="mb-8">
+              你最具有
+              <span className=" text-red-500">
+                {Object.entries(results)
+                  .sort((a, b) => b[1] - a[1])
+                  .map(([key, value]) => `${talents[key]}`)
+                  .slice(0, 3)
+                  .join("、")}
+              </span>，而
+              <span className=" text-blue-500">
+                {Object.entries(results)
+                  .sort((a, b) => a[1] - b[1])
+                  .map(([key, value]) => `${talents[key]}`)
+                  .slice(0, 3)
+                  .join("、")}
+              </span>相对较弱。
+            </div>
             <div className="mb-6">
               <h2 className="text-2xl font-bold mb-4">分析</h2>
               <TalentPolygon scores={results} />
             </div>
 
             <div>
-              <h2 className="text-2xl font-bold mb-4">结果</h2>
+              <h2 className="text-2xl font-bold mb-4">各项分值</h2>
               <ul>
                 {Object.entries(results).map(([key, value]) => (
                   <li key={key} className="mb-2">
