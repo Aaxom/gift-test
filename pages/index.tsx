@@ -120,49 +120,6 @@ const Home: React.FC = () => {
     if (score >= 16 && score <= 20) return "非常擅长";
   };
 
-  // const renderRadarChart = () => {
-  //   const categories = [
-  //     { label: '语言', key: 'A' },
-  //     { label: '逻辑-算数', key: 'B' },
-  //     { label: '空间', key: 'C' },
-  //     { label: '内省', key: 'D' },
-  //     { label: '人际', key: 'E' },
-  //     { label: '身体-动觉', key: 'F' },
-  //     { label: '音乐', key: 'G' },
-  //     { label: '自然', key: 'H' },
-  //     { label: '创造', key: 'I' },
-  //     { label: '美学', key: 'J' },
-  //   ];
-  //   const categoryScoresPercent = categories.map((category) => (results[category.key] / 20) * 100);
-
-  //   const points = categoryScoresPercent.map((percent, i) => {
-  //     const angle = (2 * Math.PI * i) / categories.length;
-  //     const x = 50 + (50 * percent * Math.cos(angle)) / 100;
-  //     const y = 50 + (50 * percent * Math.sin(angle)) / 100;
-  //     return `${x},${y}`;
-  //   });
-
-  //   const polygonPoints = points.join(' ');
-
-  //   return (
-  //     <svg width="300" height="300" viewBox="0 0 100 100" className="mx-auto">
-  //       <polygon points={polygonPoints} fill="rgba(59, 130, 246, 0.5)" stroke="rgba(59, 130, 246, 1)" strokeWidth="1" />
-  //       {categories.map((category, i) => {
-  //         const angle = (2 * Math.PI * i) / categories.length;
-  //         const x = 50 + (55 * Math.cos(angle));
-  //         const y = 50 + (55 * Math.sin(angle));
-  //         return (
-  //           <text key={"category"} x={x} y={y} textAnchor="middle" fontSize="3" fill="rgba(59, 130, 246, 1)" dy=".3em">
-  //             {category.label}
-  //           </text>
-  //         );
-  //       })}
-  //     </svg>
-  //   );
-  // };
-
-  // ...
-
   interface TalentPolygonProps {
     scores: { [key: string]: number };
   }
@@ -202,6 +159,7 @@ const Home: React.FC = () => {
                 fill="none"
                 stroke="black"
                 strokeWidth="0.5"
+                className="dark:stroke-white"
               />
             );
           })}
@@ -233,6 +191,7 @@ const Home: React.FC = () => {
                 textAnchor="middle"
                 dominantBaseline="middle"
                 fill="black"
+                className="dark:fill-white"
               >
                 {labelText}
               </text>
@@ -240,25 +199,25 @@ const Home: React.FC = () => {
           })}
         </g>
         <g>
-        {categories.map((category, index) => {
-          const angle = angleSlice * index - Math.PI / 2;
-          const x = centerX + radius * Math.cos(angle);
-          const y = centerY + radius * Math.sin(angle);
+          {categories.map((category, index) => {
+            const angle = angleSlice * index - Math.PI / 2;
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
 
-          return (
-            <line
-              key={category}
-              x1={centerX}
-              y1={centerY}
-              x2={x}
-              y2={y}
-              strokeWidth="1"
-              stroke="gray"
-              className="dark:stroke-white"
-            />
-          );
-        })}
-      </g>
+            return (
+              <line
+                key={category}
+                x1={centerX}
+                y1={centerY}
+                x2={x}
+                y2={y}
+                strokeWidth="1"
+                stroke="black"
+                className="dark:stroke-white"
+              />
+            );
+          })}
+        </g>
       </svg>
     );
   };
