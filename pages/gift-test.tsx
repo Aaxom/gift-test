@@ -110,7 +110,7 @@ const Home: React.FC = () => {
     if (score >= 4 && score <= 7) return "完全不擅长";
     if (score >= 8 && score <= 11) return "不太擅长";
     if (score >= 12 && score <= 15) return "有些擅长";
-    if (score >= 16 && score <= 19) return "非常擅长";
+    if (score >= 16 && score <= 20) return "非常擅长";
   };
 
   return (

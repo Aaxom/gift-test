@@ -1,124 +1,178 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import { useState, FormEvent } from 'react';
+import Head from 'next/head';
 
-const inter = Inter({ subsets: ['latin'] })
+type Question = {
+  question: string;
+  category: string;
+};
 
-export default function Home() {
+type Talent = {
+  [key: string]: string;
+};
+
+const optionLabels: Record<string, string> = {
+  "1": "完全不符合",
+  "2": "不太符合",
+  "3": "部分符合",
+  "4": "很符合",
+  "5": "非常符合",
+};
+
+const Home: React.FC = () => {
+  const [results, setResults] = useState<Record<string, number>>({});
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+  const [answers, setAnswers] = useState<Record<number, string>>({});
+
+  const questions: Question[] = [
+    { question: "用艺术性的方式做事", category: "J" },
+    { question: "给别人传授知识", category: "E" },
+    { question: "需要手眼协调的任务", category: "F" },
+    { question: "流畅准确地完成一系列动作", category: "F" },
+    { question: "跟随音乐的节拍", category: "G" },
+    { question: "判断动物的需求", category: "H" },
+    { question: "刻画塑造事物", category: "J" },
+    { question: "需要手指灵巧的任务", category: "F" },
+    { question: "清楚明白地阐述事情", category: "A" },
+    { question: "让配色协调", category: "J" },
+    { question: "理解公式", category: "B" },
+    { question: "与身体相关的任务", category: "F" },
+    { question: "产出丰富的想法", category: "I" },
+    { question: "空间想象和思考", category: "C" },
+    { question: "找到不同寻常的问题解決办法", category: "I" },
+    { question: "有逻辑地思考问题", category: "B" },
+    { question: "理解数学向題", category: "B" },
+    { question: "用我的语言说服对方", category: "A" },
+    { question: "识别和理解我的情绪", category: "D" },
+    { question: "用数学方式进行论述", category: "B" },
+    { question: "从不同视角想想物体", category: "C" },
+    { question: "用语言来表达想法", category: "A" },
+    { question: "认识到我的愿望和需求，并与人交流", category: "D" },
+    { question: "替别人着想", category: "E" },
+    { question: "拥有破框思维", category: "I" },
+    { question: "空间定位", category: "C" },
+    { question: "遇到压力时让自己平静", category: "D" },
+    { question: "根据说明将事物在脑海中呈现出来", category: "C" },
+    { question: "与别人打交道", category: "E" },
+    { question: "与不熟悉的动物共处", category: "H" },
+    { question: "听到旋律中细微的不和谐之处", category: "G" },
+    { question: "照料不同种类的植物", category: "H" },
+    { question: "唱歌", category: "G" },
+    { question: "在时间紧迫的情況下处理问题", category: "D" },
+    { question: "识别不同草药并在工作中使用它们", category: "H" },
+    { question: "原创性思考", category: "I" },
+    { question: "装饰空间", category: "J" },
+    { question: "迅速理解对方想要给我传达什么信息", category: "A" },
+    { question: "学习不同种类的乐器", category: "G" },
+    { question: "在人与人之同斡旋", category: "E" },
+  ];
+
+  const talents: Talent = {
+    A: "语言天赋",
+    B: "逻辑-算数天赋",
+    C: "空间天赋",
+    D: "内省天赋",
+    E: "人际天赋",
+    F: "身体-动觉天赋",
+    G: "音乐天赋",
+    H: "自然天赋",
+    I: "创造天赋",
+    J: "美学天赋",
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      setSubmitted(true);
+      const scores: Record<string, number> = {};
+      Object.values(answers).forEach((value, index) => {
+        const category = questions[index].category;
+        scores[category] = (scores[category] || 0) + parseInt(value);
+      });
+      setResults(scores);
+    }
+  };
+
+  const handleAnswerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAnswers({ ...answers, [currentQuestionIndex]: event.target.value });
+  };
+
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
+  };
+
+  const displayTalentResult = (score: number) => {
+    if (score >= 4 && score <= 7) return "完全不擅长";
+    if (score >= 8 && score <= 11) return "不太擅长";
+    if (score >= 12 && score <= 15) return "有些擅长";
+    if (score >= 16 && score <= 20) return "非常擅长";
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <div className="min-h-screen bg-gray-100">
+      <Head>
+        <title>天赋测验</title>
+      </Head>
+
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl text-center font-bold mb-8">天赋测验</h1>
+        {!submitted ? (
+        <form onSubmit={handleSubmit}>
+          <div className="mb-6 mx-3">
+            <p className="mb-2 font-semibold">
+              {currentQuestionIndex + 1}. {questions[currentQuestionIndex].question}（{questions[currentQuestionIndex].category}类）
+            </p>
+            <div className="flex flex-col">
+              {Object.entries(optionLabels).map(([score, label]) => (
+                <label key={score} className="mb-2 flex items-center">
+                  <input
+                    className="hidden"
+                    type="radio"
+                    name={`question_${currentQuestionIndex}`}
+                    value={score}
+                    required
+                    onChange={handleAnswerChange}
+                    checked={answers[currentQuestionIndex] === score}
+                    id={`question_${currentQuestionIndex}_option_${score}`}
+                  />
+                  <span
+                    className={`inline-block w-4 h-4 mr-2 border border-gray-500 rounded-full ${
+                      answers[currentQuestionIndex] === score ? 'bg-blue-500' : ''
+                    }`}
+                  ></span>
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          <button type="button" className="bg-blue-500 text-white px-4 py-2 rounded mr-4" onClick={handlePreviousQuestion}>
+            上一题
+          </button>
+          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+            {currentQuestionIndex < questions.length - 1 ? '下一题' : '完成'}
+          </button>
+        </form>
+      ) : (
+          <div>
+            <h2 className="text-2xl font-bold mb-4">结果</h2>
+            <ul>
+              {Object.entries(results).map(([key, value]) => (
+                <li key={key} className="mb-2">
+                  {talents[key]}（{key}类）: {displayTalentResult(value)} (
+                  {value} 分)
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
+    </div>
+  );
+};
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+export default Home;
