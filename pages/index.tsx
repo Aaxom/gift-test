@@ -120,6 +120,149 @@ const Home: React.FC = () => {
     if (score >= 16 && score <= 20) return "非常擅长";
   };
 
+  // const renderRadarChart = () => {
+  //   const categories = [
+  //     { label: '语言', key: 'A' },
+  //     { label: '逻辑-算数', key: 'B' },
+  //     { label: '空间', key: 'C' },
+  //     { label: '内省', key: 'D' },
+  //     { label: '人际', key: 'E' },
+  //     { label: '身体-动觉', key: 'F' },
+  //     { label: '音乐', key: 'G' },
+  //     { label: '自然', key: 'H' },
+  //     { label: '创造', key: 'I' },
+  //     { label: '美学', key: 'J' },
+  //   ];
+  //   const categoryScoresPercent = categories.map((category) => (results[category.key] / 20) * 100);
+
+  //   const points = categoryScoresPercent.map((percent, i) => {
+  //     const angle = (2 * Math.PI * i) / categories.length;
+  //     const x = 50 + (50 * percent * Math.cos(angle)) / 100;
+  //     const y = 50 + (50 * percent * Math.sin(angle)) / 100;
+  //     return `${x},${y}`;
+  //   });
+
+  //   const polygonPoints = points.join(' ');
+
+  //   return (
+  //     <svg width="300" height="300" viewBox="0 0 100 100" className="mx-auto">
+  //       <polygon points={polygonPoints} fill="rgba(59, 130, 246, 0.5)" stroke="rgba(59, 130, 246, 1)" strokeWidth="1" />
+  //       {categories.map((category, i) => {
+  //         const angle = (2 * Math.PI * i) / categories.length;
+  //         const x = 50 + (55 * Math.cos(angle));
+  //         const y = 50 + (55 * Math.sin(angle));
+  //         return (
+  //           <text key={"category"} x={x} y={y} textAnchor="middle" fontSize="3" fill="rgba(59, 130, 246, 1)" dy=".3em">
+  //             {category.label}
+  //           </text>
+  //         );
+  //       })}
+  //     </svg>
+  //   );
+  // };
+
+  // ...
+
+  interface TalentPolygonProps {
+    scores: { [key: string]: number };
+  }
+
+  const TalentPolygon: React.FC<TalentPolygonProps> = ({ scores }) => {
+    const categories = Object.keys(scores);
+    const numCategories = categories.length;
+    const polygonSize = 250;
+    const centerX = polygonSize / 2;
+    const centerY = polygonSize / 2;
+    const radius = polygonSize / 2 - 45;
+
+    const angleSlice = (2 * Math.PI) / numCategories;
+
+    const calculatePoint = (angle: number, level: number) => {
+      const x = centerX + radius * Math.cos(angle) * level;
+      const y = centerY + radius * Math.sin(angle) * level;
+      return { x, y };
+    };
+
+    return (
+      <svg className="mx-auto" width={polygonSize} height={polygonSize}>
+        <g>
+          {[4, 3, 2, 1].map((level) => {
+            const points = categories
+              .map((_, index) => {
+                const angle = angleSlice * index - Math.PI / 2;
+                const { x, y } = calculatePoint(angle, level / 4);
+                return `${x},${y}`;
+              })
+              .join(" ");
+
+            return (
+              <polygon
+                key={level}
+                points={points}
+                fill="none"
+                stroke="black"
+                strokeWidth="0.5"
+              />
+            );
+          })}
+        </g>
+        <g>
+          {categories.map((category, index) => {
+            const angle = angleSlice * index - Math.PI / 2;
+            const scoreLevel = (scores[category] - 1) / 20;
+            const { x, y } = calculatePoint(angle, scoreLevel);
+
+            return <circle key={category} cx={x} cy={y} r={3} fill="black" />;
+          })}
+        </g>
+        <g>
+          {categories.map((category, index) => {
+            const angle = angleSlice * index - Math.PI / 2;
+            const labelRadius = radius + 20;
+            const x = centerX + labelRadius * Math.cos(angle);
+            const y = centerY + labelRadius * Math.sin(angle);
+
+            const labelText = `${category}（${scores[category]}分）`;
+
+            return (
+              <text
+                key={category}
+                x={x}
+                y={y}
+                fontSize="12"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fill="black"
+              >
+                {labelText}
+              </text>
+            );
+          })}
+        </g>
+        <g>
+        {categories.map((category, index) => {
+          const angle = angleSlice * index - Math.PI / 2;
+          const x = centerX + radius * Math.cos(angle);
+          const y = centerY + radius * Math.sin(angle);
+
+          return (
+            <line
+              key={category}
+              x1={centerX}
+              y1={centerY}
+              x2={x}
+              y2={y}
+              strokeWidth="1"
+              stroke="gray"
+              className="dark:stroke-white"
+            />
+          );
+        })}
+      </g>
+      </svg>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-800">
       <Head>
@@ -132,11 +275,14 @@ const Home: React.FC = () => {
         </h1>
         {!submitted && (
           <div className="max-w-sm mx-auto mb-3 px-4 xs:px-6 sm:px-8 text-gray-700 dark:text-gray-300">
-          说明：总共40题，每题5个选项。
-        </div>
+            说明：总共40题，每题5个选项。
+          </div>
         )}
         {!submitted ? (
-          <form onSubmit={handleSubmit} className="max-w-sm mx-auto px-4 xs:px-6 sm:px-8">
+          <form
+            onSubmit={handleSubmit}
+            className="max-w-sm mx-auto px-4 xs:px-6 sm:px-8"
+          >
             <div className="mb-6">
               <p className="mb-4 font-semibold text-gray-900 dark:text-gray-200">
                 {currentQuestionIndex + 1}.{" "}
@@ -192,13 +338,19 @@ const Home: React.FC = () => {
             </button>
           </form>
         ) : (
-          <div className="mx-auto">
+          <div className="max-w-sm mx-auto px-4 xs:px-6 sm:px-8">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-4">分析</h2>
+              <TalentPolygon scores={results} />
+            </div>
+
             <div>
               <h2 className="text-2xl font-bold mb-4">结果</h2>
               <ul>
                 {Object.entries(results).map(([key, value]) => (
                   <li key={key} className="mb-2">
-                    {talents[key]}: {displayTalentResult(value)} ({value} 分)
+                    {key}.{talents[key]}: {displayTalentResult(value)} ({value}{" "}
+                    分)
                   </li>
                 ))}
               </ul>
