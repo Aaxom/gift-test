@@ -170,7 +170,7 @@ const Home: React.FC = () => {
             const scoreLevel = (scores[category] - 1) / 20;
             const { x, y } = calculatePoint(angle, scoreLevel);
 
-            return <circle key={category} cx={x} cy={y} r={3} fill="black" />;
+            return <circle key={category} cx={x} cy={y} r={3} fill="black" className="dark:fill-white"/>;
           })}
         </g>
         <g>
